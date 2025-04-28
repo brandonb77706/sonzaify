@@ -1,16 +1,25 @@
-import React from 'react';
-import SearchBar from './searchBar';
-import './index.css';
+import React from "react";
+import SearchBar from "./searchBar";
+import SearchResults from "./searchResults";
+import Tracklist from "./trackList";
+import "./App.css"; // Import the CSS file for the background
 
 function App() {
   return (
-    <div >
-      <header >
+    <div className="app-container">
+      <header className="app-header">
         <h1>Sonzaify</h1>
       </header>
-      <main >
-        <h2>Search for a song</h2>
+      <main className="app-main">
         <SearchBar />
+        <div className="results-and-tracklist">
+          <div className="search-results">
+            <SearchResults />
+          </div>
+          <div className="tracklist">
+            <Tracklist />
+          </div>
+        </div>
       </main>
     </div>
   );
