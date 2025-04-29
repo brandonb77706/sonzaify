@@ -16,6 +16,10 @@
   max-height: 80vh; /* Limit height to 80% of the viewport */
 }
 
+.search-root h1 {
+  margin: 10px 0;
+}
+
 .search-results {
   display: flex;
   flex-direction: column; /* Stack playlist items vertically */

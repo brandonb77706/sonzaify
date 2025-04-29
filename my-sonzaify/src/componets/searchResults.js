@@ -1,6 +1,5 @@
 import React from "react";
 import { tracks } from "./track";
-import PlaylistInfo from "./playlist";
 import "./searchResults.css"; // Import the CSS file
 
 function SearchResults({ addedTracks }) {

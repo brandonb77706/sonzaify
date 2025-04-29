@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import SearchBar from "./searchBar";
-import SearchResults from "./searchResults";
+import SearchBar from "./componets/searchBar";
+import SearchResults from "./componets/searchResults";
 import "./App.css"; // Import the CSS file for the background
-import PlaylistInfo from "./playlist";
+import PlaylistInfo from "./componets/playlist";
 
 function App() {
   const [playlist, setPlaylist] = useState([]);

@@ -28,6 +28,9 @@ function PlaylistInfo({ playlist, removeTracks }) {
           </div>
         ))}
       </div>
+      <div>
+        <button className="save-to-spotify-button">Save to Spotify</button>
+      </div>
     </div>
   );
 }
