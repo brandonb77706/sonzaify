@@ -1,10 +1,10 @@
-.search-root {
+.playlist-container {
   display: flex;
   flex-direction: column; /* Stack items vertically */
   align-items: center; /* Center items horizontally */
   justify-content: flex-start; /* Align items to the top */
   width: 100%;
-  max-width: 800px; /* Optional: Limit the width of the container */
+  max-width: 800px; /* Optional: Limit the width of the playlist */
   margin: 0 auto; /* Center the container horizontally */
   padding: 20px;
   box-sizing: border-box; /* Include padding in width/height calculations */
@@ -16,7 +16,29 @@
   max-height: 80vh; /* Limit height to 80% of the viewport */
 }
 
-.search-results {
+.playlist-input-wrapper {
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.playlist-input {
+  padding: 10px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  font-size: 16px;
+  width: 300px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.playlist-input:focus {
+  border-bottom: 2px solid #38bdf8;
+}
+
+.playlist-results {
   display: flex;
   flex-direction: column; /* Stack playlist items vertically */
   gap: 20px; /* Add spacing between items */
@@ -24,8 +46,7 @@
   align-items: center; /* Center items horizontally */
 }
 
-.search-result-item {
-  /* Stack text and button vertically */
+.playlist-result-item {
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
@@ -33,17 +54,17 @@
   width: 100%;
   max-width: 300px; /* Ensure consistent size */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center; /* Center-align text */
+  text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.search-result-item:hover {
+.playlist-result-item:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
-.search-result-item button {
-  background-color: #38bdf8;
+.playlist-result-item button {
+  background-color: #ff4d4d;
   color: white;
   border: none;
   border-radius: 50%;
@@ -56,7 +77,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.search-result-item button:hover {
-  background-color: #1e90ff;
+.playlist-result-item button:hover {
+  background-color: #e60000;
   transform: scale(1.1);
 }
