@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import SearchBar from "./componets/searchBar";
-import SearchResults from "./componets/searchResults";
+import SearchBar from "./componets/searchBar.js";
+import SearchResults from "./componets/searchResults.js";
 import "./App.css"; // Import the CSS file for the background
-import PlaylistInfo from "./componets/playlist";
+import PlaylistInfo from "./componets/playlist.js";
 
 function App() {
   const [playlist, setPlaylist] = useState([]);
+
   function addedTracks(track) {
     if (!playlist.some((t) => track.id === t.id)) {
       setPlaylist((prevTrack) => [track, ...prevTrack]);
