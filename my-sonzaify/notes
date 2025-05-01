@@ -5,12 +5,13 @@ challenges
 
 \*trouble authorizing user account and connecting them to spotify
 
-- had problems with organization/ file srtucture
+- trouble with the redirect links
+
+* had problems with organization/ file srtucture
   trouble with props concept
 
 had css bugs with unadded classnames in different files
 
 NOTES
-once we connect to spotify the redirect link does old code
-we need to change branch on vercel to the test and also add what we have to git
 fix error in search bar
+look at dev tools to Debugging

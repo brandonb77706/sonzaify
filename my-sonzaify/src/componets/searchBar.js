@@ -7,6 +7,7 @@ const spotfiySearchEndpoint = "https://api.spotify.com/v1/search";
 
 function SearchBar() {
   const [userInput, setUserInput] = useState("");
+  const [jsonData, setJsonData] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +22,7 @@ function SearchBar() {
       const response = await fetch(
         `${spotfiySearchEndpoint}?q=${encodeURIComponent(
           userInput
-        )}&type=track,artist`,
+        )}&type=track,artist&limit=15`,
         {
           method: "GET",
           headers: {
@@ -36,14 +37,14 @@ function SearchBar() {
 
       const data = await response.json();
       console.log("Search results are", data);
+      setJsonData(data);
     } catch (error) {
-      console.error("Error fetching tracks:", error);
+      console.error("Error fetching search:", error);
     }
   }
   //calls both these functions on sumbit
   const handleFormSubmit = (e) => {
     handleSubmit(e);
-    getTracks();
   };
 
   return (
@@ -60,6 +61,14 @@ function SearchBar() {
           <button type="submit" className="search-button">
             Search
           </button>
+
+          <ul>
+            {jsonData?.tracks?.items?.map((track) => (
+              <li key={track.id}>
+                <p>{track.name}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </form>
     </>
