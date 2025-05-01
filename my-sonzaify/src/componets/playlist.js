@@ -3,6 +3,7 @@ import "./playlist.css";
 
 // Configuration for Spotify API
 const CLIENT_ID = "2c44fa46772d42b3bc909846f3e146a2"; // Replace with your Spotify Client ID
+//make sure this is the new deployment
 const REDIRECT_URI =
   "https://sonzaify-406a163pv-brandonb77706s-projects.vercel.app/callback";
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
