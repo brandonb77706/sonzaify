@@ -4,7 +4,7 @@ import "./siginin.css";
 
 const CLIENT_ID = "2c44fa46772d42b3bc909846f3e146a2";
 const REDIRECT_URI =
-  "https://sonzaify-1tcffrmip-brandonb77706s-projects.vercel.app/callback";
+  "https://sonzaify-n218twgs5-brandonb77706s-projects.vercel.app/callback";
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const SPOTIFY_API_ENDPOINT = "https://api.spotify.com/v1";
 
@@ -17,31 +17,28 @@ const SCOPES = [
 
 function SignIn({ onConnect }) {
   // Fetch user profile to get the user ID
-  const fetchUserProfile = useCallback(
-    async (token) => {
-      try {
-        const response = await fetch(`${SPOTIFY_API_ENDPOINT}/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  async function fetchUserProfile(token) {
+    try {
+      const response = await fetch(`${SPOTIFY_API_ENDPOINT}/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (response.ok) {
-          const data = await response.json();
-          setUserId(data.id);
-          onConnect();
-        } else {
-          console.error("Failed to fetch user profile");
-          // Token might be expired - clear it
-          sessionStorage.removeItem("spotify_access_token");
-          setAccessToken(null);
-        }
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
+      if (response.ok) {
+        const data = await response.json();
+        setUserId(data.id);
+        onConnect();
+      } else {
+        console.error("Failed to fetch user profile");
+        // Token might be expired - clear it
+        sessionStorage.removeItem("spotify_access_token");
+        setAccessToken(null);
       }
-    },
-    [] // Dependencies for useCallback
-  );
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  }
 
   // Handle Spotify redirect on component mount
   useEffect(() => {
@@ -76,7 +73,7 @@ function SignIn({ onConnect }) {
         fetchUserProfile(storedToken);
       }
     }
-  }, [fetchUserProfile]); // Add fetchUserProfile as a dependency
+  }, []); // Add fetchUserProfile as a dependency
 
   // Initiates the Spotify authorization flow
   const authorizeWithSpotify = () => {
