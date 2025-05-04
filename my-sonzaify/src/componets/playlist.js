@@ -35,7 +35,7 @@ function PlaylistInfo({ getUserId, playlist = [], removeTracks }) {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${getAccessToken}`,
+            Authorization: `Bearer ${getAccessToken()}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -62,7 +62,7 @@ function PlaylistInfo({ getUserId, playlist = [], removeTracks }) {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${getAccessToken}`,
+            Authorization: `Bearer ${getAccessToken()}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -104,14 +104,22 @@ function PlaylistInfo({ getUserId, playlist = [], removeTracks }) {
         />
       </div>
       <div className="playlist-results">
-        {playlist.map((track) => (
-          <div key={track.id} className="playlist-result-item">
-            <button onClick={() => removeTracks(track)}>-</button>
-            <h2>{track.name}</h2>
-            <p>Artist: {track.artist}</p>
-            <p>Album: {track.album}</p>
-          </div>
-        ))}
+        <div className="playlist-results">
+          {playlist && playlist.length > 0 ? (
+            playlist.map((track) => (
+              <div key={track.id} className="playlist-result-item">
+                <button onClick={() => removeTracks(track)}>-</button>
+                <h2>{track.name}</h2>
+                <p>Artist: {track.artist}</p>
+                <p>Album: {track.album}</p>
+              </div>
+            ))
+          ) : (
+            <p className="empty-playlist-message">
+              Your playlist is empty. Add some tracks!
+            </p>
+          )}
+        </div>
       </div>
       <div className="playlist-actions">
         <button
@@ -119,7 +127,7 @@ function PlaylistInfo({ getUserId, playlist = [], removeTracks }) {
           onClick={savePlaylistToSpotify}
           disabled={isLoading}
         >
-          Save to spotify
+          Save To Spotify
         </button>
         {statusMessage && <p className="status-message">{statusMessage}</p>}
       </div>

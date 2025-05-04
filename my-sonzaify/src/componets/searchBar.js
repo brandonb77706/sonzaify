@@ -9,6 +9,7 @@ console.log(getAccessToken);
 function SearchBar() {
   const [userInput, setUserInput] = useState("");
   const [jsonData, setJsonData] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function getTracks() {
     try {
@@ -39,15 +40,16 @@ function SearchBar() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (userInput.length === 0) {
-      console.error("search input empty");
+      setErrorMessage("Search innput empty");
       return;
     }
+    setErrorMessage("");
     getTracks();
   };
 
   return (
     <>
-      <form className="search-bar">
+      <form className="search-bar" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Search"
@@ -56,23 +58,12 @@ function SearchBar() {
           className="search-input"
         />
         <div>
-          <button
-            type="submit"
-            onSubmit={handleSubmit}
-            className="search-button"
-          >
+          <button type="submit" className="search-button">
             Search
           </button>
-
-          <ul>
-            {jsonData?.tracks?.items?.map((track) => (
-              <li key={track.id}>
-                <p>{track.name}</p>
-              </li>
-            ))}
-          </ul>
         </div>
       </form>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
     </>
   );
 }
