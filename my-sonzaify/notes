@@ -13,6 +13,8 @@ challenges
 
 had file structure problems imports were wrongended up being a typo()
 
+when i connect to spotfiy its flipping through all of my links old and new
+change api link response type to = code there might need to be extra code for this
 had css bugs with unadded classnames in different files
 
 NOTES

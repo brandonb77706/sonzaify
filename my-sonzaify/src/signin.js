@@ -1,10 +1,11 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { setAccessToken, setUserId } from "./globalManger.js";
 import "./siginin.css";
 
 const CLIENT_ID = "2c44fa46772d42b3bc909846f3e146a2";
 const REDIRECT_URI =
-  "https://sonzaify-kw8ijkskr-brandonb77706s-projects.vercel.app/callback";
+  "https://sonzaify-kbnv3znd8-brandonb77706s-projects.vercel.app/callback";
+
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const SPOTIFY_API_ENDPOINT = "https://api.spotify.com/v1";
 
@@ -16,8 +17,40 @@ const SCOPES = [
 ];
 
 function SignIn({ onConnect }) {
-  // Fetch user profile to get the user ID
-  async function fetchUserProfile(token) {
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      // Extract the access token from URL fragment
+      const params = hash.substring(1).split("&");
+      const accessTokenParam = params.find((param) =>
+        param.startsWith("access_token=")
+      );
+
+      if (accessTokenParam) {
+        const token = accessTokenParam.split("=")[1];
+        setAccessToken(token);
+
+        // Store token in sessionStorage (optional)
+        sessionStorage.setItem("spotify_access_token", token);
+
+        // Clear the URL fragment
+        window.location.hash = "";
+
+        // Get user profile to obtain user ID
+        fetchUserProfile(token);
+      }
+    } else {
+      // Check if token exists in session storage
+      const storedToken = sessionStorage.getItem("spotify_access_token");
+      if (storedToken) {
+        setAccessToken(storedToken);
+        fetchUserProfile(storedToken);
+      }
+    }
+  }, []);
+
+  // Fetch user profile to get the user ID (needed for playlist creation)
+  const fetchUserProfile = async (token) => {
     try {
       const response = await fetch(`${SPOTIFY_API_ENDPOINT}/me`, {
         headers: {
@@ -38,43 +71,7 @@ function SignIn({ onConnect }) {
     } catch (error) {
       console.error("Error fetching user profile:", error);
     }
-  }
-
-  // Handle Spotify redirect on component mount
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      // Extract the access token from URL fragment
-      const params = hash.substring(1).split("&");
-      const accessTokenParam = params.find((param) =>
-        param.startsWith("access_token=")
-      );
-
-      if (accessTokenParam) {
-        const token = accessTokenParam.split("=")[1];
-
-        // Set the token globally
-        setAccessToken(token);
-
-        // Store token in sessionStorage
-        sessionStorage.setItem("spotify_access_token", token);
-
-        // Clear the URL fragment
-        window.location.hash = "";
-
-        // Fetch user profile
-        fetchUserProfile(token);
-      }
-    } else {
-      // Check if token exists in session storage
-      const storedToken = sessionStorage.getItem("spotify_access_token");
-      if (storedToken) {
-        setAccessToken(storedToken);
-        fetchUserProfile(storedToken);
-      }
-    }
-  }, []); // Add fetchUserProfile as a dependency
-
+  };
   // Initiates the Spotify authorization flow
   const authorizeWithSpotify = () => {
     // Generate a random state value for security
@@ -86,7 +83,7 @@ function SignIn({ onConnect }) {
       `${SPOTIFY_AUTH_ENDPOINT}?client_id=${CLIENT_ID}` +
       `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
       `&scope=${encodeURIComponent(SCOPES.join(" "))}` +
-      `&response_type=token` +
+      `&response_type=code` + // changed response type to code might have to change stuff
       `&state=${state}` +
       `&show_dialog=true`;
 
