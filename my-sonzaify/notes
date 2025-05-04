@@ -6,9 +6,12 @@ challenges
 \*trouble authorizing user account and connecting them to spotify
 
 - trouble with the redirect links
+  -manifest.json problems my redirect is returning 401
 
 * had problems with organization/ file srtucture
   trouble with props concept
+
+had file structure problems imports were wrongended up being a typo()
 
 had css bugs with unadded classnames in different files
 

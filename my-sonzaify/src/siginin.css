@@ -1,0 +1,40 @@
+/* Center the container vertically and horizontally */
+.signin-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  color: white;
+  text-align: center;
+}
+
+/* Adjust the prompt section to move it higher */
+.prompt {
+  margin-top: -100px; /* Move the prompt higher */
+  margin-bottom: 10px;
+}
+
+/* Style the h3 element */
+.prompt h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+/* Style the button */
+.prompt-button {
+  background-color: white;
+  color: #1db954;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.prompt-button:hover {
+  background-color: #1aa34a; /* Darker Spotify green */
+  color: white;
+}

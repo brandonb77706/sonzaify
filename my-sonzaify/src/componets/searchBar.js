@@ -1,22 +1,15 @@
 import React, { useState } from "react";
 import "./searchBar.css";
-import getAccessToken from "./playlist.js";
+import { getAccessToken } from "../globalManger.js";
 
 //putting spotfiy api edpoints as variables
 const spotfiySearchEndpoint = "https://api.spotify.com/v1/search";
+console.log(getAccessToken);
 
 function SearchBar() {
   const [userInput, setUserInput] = useState("");
   const [jsonData, setJsonData] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (userInput.length === 0) {
-      console.error("search input empty");
-      return;
-    }
-    getTracks();
-  };
   async function getTracks() {
     try {
       const response = await fetch(
@@ -42,14 +35,19 @@ function SearchBar() {
       console.error("Error fetching search:", error);
     }
   }
-  //calls both these functions on sumbit
-  const handleFormSubmit = (e) => {
-    handleSubmit(e);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (userInput.length === 0) {
+      console.error("search input empty");
+      return;
+    }
+    getTracks();
   };
 
   return (
     <>
-      <form onSubmit={handleFormSubmit} className="search-bar">
+      <form className="search-bar">
         <input
           type="text"
           placeholder="Search"
@@ -58,7 +56,11 @@ function SearchBar() {
           className="search-input"
         />
         <div>
-          <button type="submit" className="search-button">
+          <button
+            type="submit"
+            onSubmit={handleSubmit}
+            className="search-button"
+          >
             Search
           </button>
 

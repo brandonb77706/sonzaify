@@ -1,133 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./playlist.css";
+import { getAccessToken, setAccessToken } from "../globalManger.js";
 
-// Configuration for Spotify API
-const CLIENT_ID = "2c44fa46772d42b3bc909846f3e146a2"; // Replace with your Spotify Client ID
-//make sure this is the new deployment
-const REDIRECT_URI =
-  "https://sonzaify-hofcuzgyc-brandonb77706s-projects.vercel.app/callback";
-const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-const SPOTIFY_API_ENDPOINT = "https://api.spotify.com/v1";
-
-// Required scopes for creating and modifying playlists
-const SCOPES = [
-  "playlist-modify-public",
-  "playlist-modify-private",
-  "user-read-private",
-];
-
-let tokenToExport = null;
-function PlaylistInfo({ playlist, removeTracks }) {
+function PlaylistInfo({ getUserId, playlist = [], removeTracks }) {
   const [playlistName, setPlaylistName] = useState("");
-  const [accessToken, setAccessToken] = useState(null);
-  const [userId, setUserId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
 
-  // Handle Spotify redirect on component mount
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      // Extract the access token from URL fragment
-      const params = hash.substring(1).split("&");
-      const accessTokenParam = params.find((param) =>
-        param.startsWith("access_token=")
-      );
-
-      if (accessTokenParam) {
-        const token = accessTokenParam.split("=")[1];
-        setAccessToken(token);
-
-        // Store token in sessionStorage (optional)
-        sessionStorage.setItem("spotify_access_token", token);
-
-        // Clear the URL fragment
-        window.location.hash = "";
-
-        // Get user profile to obtain user ID
-        fetchUserProfile(token);
-      }
-    } else {
-      // Check if token exists in session storage
-      const storedToken = sessionStorage.getItem("spotify_access_token");
-      if (storedToken) {
-        setAccessToken(storedToken);
-        fetchUserProfile(storedToken);
-      }
-    }
-  }, []);
-
-  //allows me to export token to other file
-  useEffect(() => {
-    tokenToExport = accessToken;
-  }, [accessToken]);
-
-  // Fetch user profile to get the user ID (needed for playlist creation)
-  const fetchUserProfile = async (token) => {
-    try {
-      const response = await fetch(`${SPOTIFY_API_ENDPOINT}/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUserId(data.id);
-      } else {
-        console.error("Failed to fetch user profile");
-        // Token might be expired - clear it
-        sessionStorage.removeItem("spotify_access_token");
-        setAccessToken(null);
-      }
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
-    }
-  };
+  const SPOTIFY_API_ENDPOINT = "https://api.spotify.com/v1";
 
   const handleChange = (e) => {
     setPlaylistName(e.target.value);
   };
 
-  // Initiates the Spotify authorization flow
-  const authorizeWithSpotify = () => {
-    // Generate a random state value for security
-    const state = generateRandomString(16);
-    sessionStorage.setItem("spotify_auth_state", state);
-
-    // Create authorization URL with required parameters
-    const authUrl =
-      `${SPOTIFY_AUTH_ENDPOINT}?client_id=${CLIENT_ID}` +
-      `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
-      `&scope=${encodeURIComponent(SCOPES.join(" "))}` +
-      `&response_type=token` +
-      `&state=${state}` +
-      `&show_dialog=true`;
-
-    // Redirect to Spotify authorization page
-    window.location.href = authUrl;
-  };
-
-  // Utility function to generate a random string for state parameter
-  const generateRandomString = (length) => {
-    const possible =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let text = "";
-
-    for (let i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-
-    return text;
-  };
-
   // Creates a new playlist and adds the tracks
   const savePlaylistToSpotify = async () => {
-    if (!accessToken) {
-      authorizeWithSpotify();
-      return;
-    }
-
     if (!playlistName.trim()) {
       setStatusMessage("Please enter a playlist name");
       return;
@@ -144,11 +31,11 @@ function PlaylistInfo({ playlist, removeTracks }) {
     try {
       // Step 1: Create a new playlist
       const createPlaylistResponse = await fetch(
-        `${SPOTIFY_API_ENDPOINT}/users/${userId}/playlists`,
+        `${SPOTIFY_API_ENDPOINT}/users/${getUserId()}/playlists`,
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${getAccessToken}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -175,7 +62,7 @@ function PlaylistInfo({ playlist, removeTracks }) {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${getAccessToken}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -232,7 +119,7 @@ function PlaylistInfo({ playlist, removeTracks }) {
           onClick={savePlaylistToSpotify}
           disabled={isLoading}
         >
-          {accessToken ? "Save to spotify" : "Connect to spotify "}
+          Save to spotify
         </button>
         {statusMessage && <p className="status-message">{statusMessage}</p>}
       </div>
@@ -240,5 +127,4 @@ function PlaylistInfo({ playlist, removeTracks }) {
   );
 }
 
-export const getAccessToken = () => tokenToExport;
 export default PlaylistInfo;
