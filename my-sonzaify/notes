@@ -7,6 +7,8 @@ challenges
 
 - trouble with the redirect links
   -manifest.json problems my redirect is returning 401
+  when i push to git my signin.js isn't changing the redirect uri
+  COMMONE REDIRECT PROBLEM: files used in vercel arent updated with the right redirect file
 
 * had problems with organization/ file srtucture
   trouble with props concept

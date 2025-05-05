@@ -4,7 +4,7 @@ import "./siginin.css";
 
 const CLIENT_ID = "2c44fa46772d42b3bc909846f3e146a2";
 const REDIRECT_URI =
-  "https://sonzaify-mb7uk90e6-brandonb77706s-projects.vercel.app/callback";
+  "https://sonzaify-ej1wv0ygs-brandonb77706s-projects.vercel.app/callback";
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const SPOTIFY_API_ENDPOINT = "https://api.spotify.com/v1";
 
@@ -12,7 +12,7 @@ const SCOPES = [
   "playlist-modify-public",
   "playlist-modify-private",
   "user-read-private",
-  "user-read-email", // Added email scope for better profile info
+  "user-read-email",
 ];
 
 function SignIn({ onConnect }) {
@@ -21,42 +21,45 @@ function SignIn({ onConnect }) {
 
   useEffect(() => {
     const handleAuthCallback = async () => {
-      const queryParams = new URLSearchParams(window.location.search);
-      const code = queryParams.get("code");
-      const returnedState = queryParams.get("state");
-      const storedState = sessionStorage.getItem("spotify_auth_state");
-      const error = queryParams.get("error");
+      // Check if we're in the callback route
+      if (!window.location.search) return;
 
-      // Clear any previous errors
+      setIsLoading(true);
       setError(null);
 
-      if (error) {
-        console.error("Spotify Auth Error:", error);
-        setError(`Authentication failed: ${error}`);
-        return;
-      }
+      try {
+        const queryParams = new URLSearchParams(window.location.search);
+        const code = queryParams.get("code");
+        const returnedState = queryParams.get("state");
+        const storedState = localStorage.getItem("spotify_auth_state");
+        const authError = queryParams.get("error");
 
-      if (code) {
-        console.log("Received authorization code");
-        setIsLoading(true);
+        // Clear the stored state immediately
+        localStorage.removeItem("spotify_auth_state");
 
-        if (returnedState !== storedState) {
-          console.error("State mismatch. Possible CSRF attack.");
-          setError("Security validation failed");
-          setIsLoading(false);
-          return;
+        if (authError) {
+          throw new Error(`Spotify Auth Error: ${authError}`);
         }
 
-        // Clear the stored state
-        sessionStorage.removeItem("spotify_auth_state");
-
-        try {
-          await fetchAccessTokenFromBackend(code);
-        } catch (error) {
-          setError("Failed to complete authentication");
-        } finally {
-          setIsLoading(false);
+        if (!code) {
+          throw new Error("No authorization code received");
         }
+
+        // State validation
+        if (!storedState || returnedState !== storedState) {
+          throw new Error("State validation failed");
+        }
+
+        // Exchange code for token
+        await fetchAccessTokenFromBackend(code);
+      } catch (error) {
+        console.error("Authentication error:", error);
+        setError(error.message || "Authentication failed");
+        // Clean up any stored tokens on error
+        localStorage.removeItem("spotify_access_token");
+        localStorage.removeItem("spotify_refresh_token");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -64,77 +67,67 @@ function SignIn({ onConnect }) {
   }, []);
 
   const fetchAccessTokenFromBackend = async (code) => {
-    try {
-      const response = await fetch("http://localhost:3001/spotify/token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          code,
-          redirectUri: REDIRECT_URI,
-        }),
-      });
+    const response = await fetch("http://localhost:3001/spotify/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code,
+        redirectUri: REDIRECT_URI,
+      }),
+    });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to exchange code for token");
-      }
-
-      const data = await response.json();
-      console.log("Token exchange successful");
-
-      setAccessToken(data.access_token);
-      sessionStorage.setItem("spotify_access_token", data.access_token);
-      sessionStorage.setItem("spotify_refresh_token", data.refresh_token);
-
-      await fetchUserProfile(data.access_token);
-    } catch (error) {
-      console.error("Token exchange error:", error);
-      throw error;
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to exchange code for token");
     }
+
+    const data = await response.json();
+
+    // Store tokens
+    setAccessToken(data.access_token);
+    localStorage.setItem("spotify_access_token", data.access_token);
+    localStorage.setItem("spotify_refresh_token", data.refresh_token);
+
+    await fetchUserProfile(data.access_token);
   };
 
   const fetchUserProfile = async (token) => {
-    try {
-      const response = await fetch(`${SPOTIFY_API_ENDPOINT}/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    const response = await fetch(`${SPOTIFY_API_ENDPOINT}/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch user profile");
-      }
-
-      const data = await response.json();
-      setUserId(data.id);
-      onConnect();
-    } catch (error) {
-      console.error("Profile fetch error:", error);
-      sessionStorage.removeItem("spotify_access_token");
-      setAccessToken(null);
-      throw error;
+    if (!response.ok) {
+      throw new Error("Failed to fetch user profile");
     }
+
+    const data = await response.json();
+    setUserId(data.id);
+    onConnect();
   };
 
   const authorizeWithSpotify = () => {
-    setIsLoading(true);
-    setError(null);
-
     try {
-      const state = generateRandomString(16);
-      sessionStorage.setItem("spotify_auth_state", state);
+      setIsLoading(true);
+      setError(null);
 
+      // Generate and store state
+      const state = generateRandomString(16);
+      localStorage.setItem("spotify_auth_state", state);
+
+      // Build authorization URL
       const authUrl = new URL(SPOTIFY_AUTH_ENDPOINT);
       authUrl.searchParams.append("client_id", CLIENT_ID);
-      authUrl.searchParams.append("redirect_uri", REDIRECT_URI);
-      authUrl.searchParams.append("scope", SCOPES.join(" "));
       authUrl.searchParams.append("response_type", "code");
+      authUrl.searchParams.append("redirect_uri", REDIRECT_URI);
       authUrl.searchParams.append("state", state);
+      authUrl.searchParams.append("scope", SCOPES.join(" "));
       authUrl.searchParams.append("show_dialog", "true");
 
-      console.log("Initiating Spotify authorization...");
+      // Redirect to Spotify auth page
       window.location.href = authUrl.toString();
     } catch (error) {
       console.error("Authorization error:", error);
@@ -155,7 +148,11 @@ function SignIn({ onConnect }) {
     <div className="signin-container">
       <div className="prompt">
         <h2>Creating Spotify playlists made easy</h2>
-        {error && <div className="error-message">{error}</div>}
+        {error && (
+          <div className="error-message" role="alert">
+            {error}
+          </div>
+        )}
         <button
           className={`prompt-button ${isLoading ? "loading" : ""}`}
           onClick={authorizeWithSpotify}
