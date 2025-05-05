@@ -186,7 +186,7 @@ function SignIn({ onConnect }) {
   return (
     <div className="signin-container">
       <div className="prompt">
-        <h2>Creating playlist made easy</h2>
+        <h2>Creating spotify playlist made easy</h2>
         <button className="prompt-button" onClick={authorizeWithSpotify}>
           Connect To Spotify
         </button>
