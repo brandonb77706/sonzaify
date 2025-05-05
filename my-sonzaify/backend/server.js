@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -14,6 +13,14 @@ app.use(cors());
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const SPOTIFY_TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
+
+console.log("CLIENT_ID:", CLIENT_ID);
+console.log("CLIENT_SECRET:", CLIENT_SECRET);
+
+// Define routes BEFORE calling app.listen()
+app.get("/", (req, res) => {
+  res.send("Backend server is running!");
+});
 
 app.post("/spotify/token", async (req, res) => {
   const { code, redirectUri } = req.body;
