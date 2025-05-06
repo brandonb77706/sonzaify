@@ -3,8 +3,11 @@ import { setAccessToken, setUserId } from "./globalManger.js";
 import "./siginin.css";
 
 const CLIENT_ID = "2c44fa46772d42b3bc909846f3e146a2";
-const REDIRECT_URI =
-  "https://sonzaify-ej1wv0ygs-brandonb77706s-projects.vercel.app/callback";
+
+// const REDIRECT_URI =
+//   "https://sonzaify-n6jgpammy-brandonb77706s-projects.vercel.app/callback";
+//problem with lnks being different, this keeps it the same
+const REDIRECT_URI = `${window.location.origin}/callback`;
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const SPOTIFY_API_ENDPOINT = "https://api.spotify.com/v1";
 
