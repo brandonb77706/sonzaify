@@ -30,7 +30,7 @@
   justify-content: center;
   gap: 30px;
   padding: 20px;
-  margin: 0 auto;
+  margin: 0 30px;
   max-width: 1200px;
 }
 
@@ -113,33 +113,6 @@
   to {
     opacity: 1;
   }
-}
-
-.clear-button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.clear-button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.clear-button:hover {
-  background-color: #c0392b;
-  transform: scale(1.05);
-}
-
-.clear-button:active {
-  transform: scale(0.95);
 }
 
 /* Responsive design */

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import "./playlist.css";
-import { getAccessToken, setAccessToken } from "../globalManger.js";
+import {
+  getAccessToken,
+  setAccessToken,
+  clearTracks,
+} from "../globalManger.js";
 
 function PlaylistInfo({ getUserId, playlist = [], removeTracks }) {
   const [playlistName, setPlaylistName] = useState("");
@@ -144,6 +148,13 @@ function PlaylistInfo({ getUserId, playlist = [], removeTracks }) {
           disabled={isLoading}
         >
           Save To Spotify
+        </button>
+        <button
+          className="clear-button"
+          onClick={clearTracks}
+          aria-label="Clear all tracks"
+        >
+          Clear All
         </button>
         {statusMessage && <p className="status-message">{statusMessage}</p>}
       </div>

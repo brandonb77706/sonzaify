@@ -75,16 +75,8 @@ function App() {
               getUserId={getUserId}
               playlist={playlist}
               removeTracks={removeTracks}
+              clearTracks={clearTracks}
             />
-          </div>
-          <div className="clear-button-container">
-            <button
-              className="clear-button"
-              onClick={clearTracks}
-              aria-label="Clear all tracks"
-            >
-              Clear All
-            </button>
           </div>
         </div>
       </main>
