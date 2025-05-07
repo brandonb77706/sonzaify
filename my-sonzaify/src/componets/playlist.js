@@ -107,11 +107,27 @@ function PlaylistInfo({ getUserId, playlist = [], removeTracks }) {
         <div className="playlist-results">
           {playlist && playlist.length > 0 ? (
             playlist.map((track) => (
-              <div key={track.id} className="playlist-result-item">
-                <button onClick={() => removeTracks(track)}>-</button>
-                <h2>{track.name}</h2>
-                <p>Artist: {track.artist}</p>
-                <p>Album: {track.album}</p>
+              <div key={track.id} className="track-item">
+                <div className="track-content">
+                  <img
+                    src={track.album.images[2]?.url || "/default-album.png"}
+                    alt={track.name}
+                    className="track-image"
+                  />
+                  <div className="track-info">
+                    <h3 className="track-name">{track.name}</h3>
+                    <p className="track-artist">
+                      {track.artists.map((artist) => artist.name).join(", ")}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  className="remove-track-button"
+                  onClick={() => removeTracks(track)}
+                  aria-label={`remove ${track.name} from playlist`}
+                >
+                  +
+                </button>
               </div>
             ))
           ) : (

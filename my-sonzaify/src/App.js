@@ -13,8 +13,18 @@ function App() {
 
   //function to add tracks
   function addedTracks(track) {
+    // the info we want to add to the track
+    const trackInfo = {
+      id: track.id,
+      name: track.name,
+      artists: track.artists,
+      album: {
+        images: track.album.images,
+      },
+      uri: track.uri,
+    };
     if (!playlist.some((t) => track.id === t.id)) {
-      setPlaylist((prevTrack) => [track, ...prevTrack]);
+      setPlaylist((prevTrack) => [trackInfo, ...prevTrack]);
     }
   }
   //function to remove tracks
