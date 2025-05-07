@@ -45,7 +45,7 @@ function App() {
       <main className="app-main">
         <SearchBar />
         <div className="results-and-tracklist">
-          <div>
+          <div className="search-tracks">
             <Tracks addedTracks={addedTracks} />
           </div>
           <div className="playlist">

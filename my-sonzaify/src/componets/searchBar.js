@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./searchBar.css";
-import { getAccessToken } from "../globalManger.js";
+import { getAccessToken, setJsonData } from "../globalManger.js";
 
 //putting spotfiy api edpoints as variables
 const spotfiySearchEndpoint = "https://api.spotify.com/v1/search";
@@ -8,7 +8,7 @@ console.log(getAccessToken);
 
 function SearchBar() {
   const [userInput, setUserInput] = useState("");
-  const [jsonData, setJsonData] = useState(null);
+  const [jsonData] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
   async function getTracks() {

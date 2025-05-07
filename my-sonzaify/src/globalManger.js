@@ -16,3 +16,12 @@ export const setUserId = (id) => {
 export const getUserId = () => {
   return userId;
 };
+
+let jsonData = null;
+export const setJsonData = (data) => {
+  jsonData = data;
+};
+
+export const getJsonData = () => {
+  return jsonData;
+};

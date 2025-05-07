@@ -1,14 +1,17 @@
 import React from "react";
 import "./tracks.css";
+import { getJsonData } from "../globalManger";
 
-function Tracks({ searchResults, onSelectTrack }) {
-  if (!searchResults || searchResults.length === 0) {
-    return null;
+function Tracks() {
+  const searchData = getJsonData();
+
+  if (searchData.length == 0 || !searchData) {
+    return <div className="tracks-container">No tracks available</div>;
   }
 
   return (
     <div className="tracks-container">
-      {searchResults.tracks.items.map((track) => (
+      {searchData.tracks.items.map((track) => (
         <div key={track.id} className="track-item">
           <div className="track-content">
             <img
