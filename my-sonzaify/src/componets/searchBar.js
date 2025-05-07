@@ -8,7 +8,6 @@ console.log(getAccessToken);
 
 function SearchBar() {
   const [userInput, setUserInput] = useState("");
-  const [jsonData] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
   async function getTracks() {

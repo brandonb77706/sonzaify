@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import SearchBar from "./componets/searchBar.js";
-import SearchResults from "./componets/searchResults.js";
 import "./App.css";
 import PlaylistInfo from "./componets/playlist.js";
 import SignIn from "./signin.js";
+import Tracks from "./componets/tracks.js";
 import { getUserId } from "./globalManger.js";
 
 function App() {

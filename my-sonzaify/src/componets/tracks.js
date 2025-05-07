@@ -1,11 +1,11 @@
 import React from "react";
 import "./tracks.css";
-import { getJsonData } from "../globalManger";
+import { getJsonData } from "../globalManger.js";
 
-function Tracks() {
+function Tracks({ addedTracks }) {
   const searchData = getJsonData();
 
-  if (searchData.length == 0 || !searchData) {
+  if (searchData.length === 0 || !searchData) {
     return <div className="tracks-container">No tracks available</div>;
   }
 
