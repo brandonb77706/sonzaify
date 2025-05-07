@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./tracks.css";
-//import { getJsonData } from "../globalManger.js";
 
 function Tracks({ addedTracks, searchResults }) {
-  // if (!searchResults || searchResults.tracks) {
-  //    <div className="tracks-container">Search for tracks to display</div>;
-  // }
   return (
     <div className="tracks-container">
-      {searchResults.tracks.items.map((track) => (
+      {!searchResults && <div>Search for tracks to display</div>}
+
+      {searchResults?.tracks?.items?.map((track) => (
         <div key={track.id} className="track-item">
           <div className="track-content">
             <img
