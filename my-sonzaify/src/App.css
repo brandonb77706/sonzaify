@@ -27,7 +27,7 @@
 
 .results-and-tracklist {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   gap: 30px;
   padding: 20px;
   margin: 0 30px;
