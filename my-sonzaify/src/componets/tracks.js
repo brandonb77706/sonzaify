@@ -14,7 +14,7 @@ function Tracks({ addedTracks }) {
   }, [getJsonData()]); //excutes everytime user searchs this re renders
 
   if (!searchData || !searchData.tracks) {
-    return null;
+    <p>test null</p>;
   }
 
   return (
