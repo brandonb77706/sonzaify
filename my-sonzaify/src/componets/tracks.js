@@ -5,10 +5,6 @@ import { getJsonData } from "../globalManger.js";
 function Tracks({ addedTracks }) {
   const searchData = getJsonData();
 
-  if (!searchData) {
-    return <div className="tracks-container">No tracks available</div>;
-  }
-
   return (
     <div className="tracks-container">
       {searchData.tracks.items.map((track) => (
