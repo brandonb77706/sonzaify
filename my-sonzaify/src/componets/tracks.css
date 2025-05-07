@@ -1,63 +1,51 @@
 .tracks-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
   padding: 20px;
-  box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 70vh;
   overflow-y: auto;
-  max-height: 80vh;
+  width: 100%;
+  max-width: 400px;
 }
 
 .track-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 12px;
   background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  padding: 15px;
-  width: 100%;
-  max-width: 300px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin-bottom: 15px;
-}
-
-.track-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
 .track-content {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
+  flex: 1;
 }
 
 .track-image {
   width: 50px;
   height: 50px;
   border-radius: 4px;
+  object-fit: cover;
 }
 
 .track-info {
   flex: 1;
-  text-align: left;
 }
 
 .track-name {
   margin: 0;
   font-size: 16px;
   color: white;
+  font-weight: 500;
 }
 
 .track-artist {
-  margin: 5px 0 0;
+  margin: 4px 0 0;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.7);
 }
@@ -72,11 +60,46 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-left: 15px;
+  transition: all 0.3s ease;
 }
 
 .add-track-button:hover {
-  background-color: #1e90ff;
+  background-color: #0ea5e9;
   transform: scale(1.1);
+}
+
+.add-track-button:active {
+  transform: scale(0.95);
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .tracks-container {
+    max-width: 100%;
+    height: 50vh;
+    padding: 15px;
+  }
+
+  .track-item {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .track-content {
+    gap: 8px;
+  }
+
+  .track-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .track-name {
+    font-size: 14px;
+  }
+
+  .track-artist {
+    font-size: 12px;
+  }
 }

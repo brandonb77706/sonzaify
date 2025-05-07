@@ -126,7 +126,7 @@ function PlaylistInfo({ getUserId, playlist = [], removeTracks }) {
                   onClick={() => removeTracks(track)}
                   aria-label={`remove ${track.name} from playlist`}
                 >
-                  +
+                  -
                 </button>
               </div>
             ))
