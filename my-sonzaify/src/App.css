@@ -41,6 +41,17 @@
   max-width: 400px;
   min-width: 300px;
 }
+/* seeing if i can have constant css in main */
+.track-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: #ffffff1a;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
 
 /* Animation for the gradient background */
 @keyframes gradientAnimation {
@@ -102,6 +113,33 @@
   to {
     opacity: 1;
   }
+}
+
+.clear-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.clear-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clear-button:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+.clear-button:active {
+  transform: scale(0.95);
 }
 
 /* Responsive design */

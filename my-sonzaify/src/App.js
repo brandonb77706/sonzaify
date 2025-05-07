@@ -32,6 +32,11 @@ function App() {
     setPlaylist(playlist.filter((t) => track.id !== t.id));
   }
 
+  function clearTracks() {
+    setPlaylist([]);
+    setSearchResults(null);
+  }
+
   // Add this function to handle search results
   const handleSearch = (results) => {
     setSearchResults(results);
@@ -71,6 +76,15 @@ function App() {
               playlist={playlist}
               removeTracks={removeTracks}
             />
+          </div>
+          <div className="clear-button-container">
+            <button
+              className="clear-button"
+              onClick={clearTracks}
+              aria-label="Clear all tracks"
+            >
+              Clear All
+            </button>
           </div>
         </div>
       </main>
