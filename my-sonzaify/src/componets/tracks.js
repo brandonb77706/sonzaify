@@ -1,25 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./tracks.css";
 //import { getJsonData } from "../globalManger.js";
-import { useSearchData } from "../hooks/searchhook.js";
 
-function Tracks({ addedTracks }) {
-  const { searchData, isLoading, error } = useSearchData();
-
-  if (isLoading) {
-    return <div className="tracks-container">Loading tracks...</div>;
-  }
-
-  if (error) {
-    return <div className="tracks-container">Error: {error}</div>;
-  }
-
-  if (!searchData || !searchData.tracks || !searchData.tracks.items) {
-    return <div className="tracks-container">Search for tracks to display</div>;
-  }
+function Tracks({ addedTracks, searchResults }) {
+  // if (!searchResults || searchResults.tracks) {
+  //    <div className="tracks-container">Search for tracks to display</div>;
+  // }
   return (
     <div className="tracks-container">
-      {searchData.tracks.items.map((track) => (
+      {searchResults.tracks.items.map((track) => (
         <div key={track.id} className="track-item">
           <div className="track-content">
             <img
