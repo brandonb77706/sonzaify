@@ -5,7 +5,7 @@ import { getJsonData } from "../globalManger.js";
 function Tracks({ addedTracks }) {
   const searchData = getJsonData();
 
-  if (searchData.length === 0 || !searchData) {
+  if (!searchData) {
     return <div className="tracks-container">No tracks available</div>;
   }
 
