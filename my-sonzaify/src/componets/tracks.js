@@ -1,9 +1,22 @@
 import React from "react";
 import "./tracks.css";
-import { getJsonData } from "../globalManger.js";
+import { getJsonData, useEffect } from "../globalManger.js";
 
 function Tracks({ addedTracks }) {
-  const searchData = getJsonData();
+  const [searchData, setSearchData] = useState(null);
+
+  // Only update searchData when getJsonData() returns something
+  useEffect(() => {
+    const data = getJsonData();
+    if (data) {
+      setSearchData(data);
+    }
+  }, [getJsonData()]); // This will run when getJsonData updates
+
+  // Show nothing until search is performed
+  if (!searchData || !searchData.tracks) {
+    return null;
+  }
 
   return (
     <div className="tracks-container">
