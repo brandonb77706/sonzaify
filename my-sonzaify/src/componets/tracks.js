@@ -1,29 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./tracks.css";
-import { getJsonData } from "../globalManger.js";
+//import { getJsonData } from "../globalManger.js";
+import { useSearchData } from "../hooks/searchhook.js";
 
 function Tracks({ addedTracks }) {
-  const [searchData, setSearchData] = useState(null);
+  const { searchData, isLoading, error } = useSearchData();
 
-  // Only update searchData when getJsonData() returns something
-  useEffect(() => {
-    const data = getJsonData();
-    if (data) {
-      setSearchData(data);
-      console.log("testing the tracks:", data);
-    }
-  }, [getJsonData()]); //excutes everytime user searchs this re renders
-
-  useEffect(() => {
-    const intervalId = setInterval(searchData, 500);
-    return () => clearInterval(intervalId);
-  }, []);
-
-  // Fix: Return early if no data
-  if (!searchData || !searchData.tracks) {
-    return <div className="tracks-container">Search for tracks to display</div>;
+  if (isLoading) {
+    return <div className="tracks-container">Loading tracks...</div>;
   }
 
+  if (error) {
+    return <div className="tracks-container">Error: {error}</div>;
+  }
+
+  if (!searchData || !searchData.tracks || !searchData.tracks.items) {
+    return <div className="tracks-container">Search for tracks to display</div>;
+  }
   return (
     <div className="tracks-container">
       {searchData.tracks.items.map((track) => (

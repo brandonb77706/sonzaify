@@ -5,6 +5,7 @@ import PlaylistInfo from "./componets/playlist.js";
 import SignIn from "./signin.js";
 import Tracks from "./componets/tracks.js";
 import { getUserId } from "./globalManger.js";
+const [searchResults, setSearchResults] = useState(null); // Add this state
 
 function App() {
   const [playlist, setPlaylist] = useState([]);
@@ -20,6 +21,12 @@ function App() {
   function removeTracks(track) {
     setPlaylist(playlist.filter((t) => track.id !== t.id));
   }
+
+  // Add this function to handle search results
+  const handleSearch = (results) => {
+    setSearchResults(results);
+  };
+
   //handles connections to spotfiy
   const handleConnectToSpotify = () => {
     setIsConnected(true);
@@ -43,10 +50,10 @@ function App() {
         <h1 className="search-title">Sonzaify</h1>
       </header>
       <main className="app-main">
-        <SearchBar />
+        <SearchBar onSearch={handleSearch} />
         <div className="results-and-tracklist">
           <div className="search-tracks">
-            <Tracks addedTracks={addedTracks} />
+            <Tracks addedTracks={addedTracks} searchResults={searchResults} />
           </div>
           <div className="playlist">
             <PlaylistInfo

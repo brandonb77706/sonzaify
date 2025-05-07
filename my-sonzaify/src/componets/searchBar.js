@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import "./searchBar.css";
-import { getAccessToken, setJsonData } from "../globalManger.js";
+import { getAccessToken } from "../globalManger.js";
 
-//putting spotfiy api edpoints as variables
 const spotfiySearchEndpoint = "https://api.spotify.com/v1/search";
-console.log(getAccessToken);
 
-function SearchBar() {
+function SearchBar({ onSearch }) {
   const [userInput, setUserInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   async function getTracks() {
     try {
+      setIsLoading(true);
       const response = await fetch(
         `${spotfiySearchEndpoint}?q=${encodeURIComponent(
           userInput
@@ -29,17 +29,20 @@ function SearchBar() {
       }
 
       const data = await response.json();
-      console.log("Search results are", data.tracks.items);
-      setJsonData(data);
+      console.log("Search results:", data.tracks.items);
+      onSearch(data); // Pass data up to parent instead of using global state
     } catch (error) {
       console.error("Error fetching search:", error);
+      setErrorMessage("Failed to fetch tracks");
+    } finally {
+      setIsLoading(false);
     }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (userInput.length === 0) {
-      setErrorMessage("Search innput empty");
+    if (userInput.trim().length === 0) {
+      setErrorMessage("Search input empty");
       return;
     }
     setErrorMessage("");
@@ -51,14 +54,19 @@ function SearchBar() {
       <form className="search-bar" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Search"
+          placeholder="Search for tracks..."
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           className="search-input"
+          disabled={isLoading}
         />
         <div>
-          <button type="submit" className="search-button">
-            Search
+          <button
+            type="submit"
+            className={`search-button ${isLoading ? "loading" : ""}`}
+            disabled={isLoading}
+          >
+            {isLoading ? "Searching..." : "Search"}
           </button>
         </div>
       </form>
