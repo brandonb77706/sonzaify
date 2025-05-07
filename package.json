@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "install-all": "npm ci --only=production && cd my-sonzaify && npm ci --only=production",
+    "install-all": "cd my-sonzaify && npm ci --only=production",
     "build": "cd my-sonzaify && npm run build",
     "start": "cd my-sonzaify/backend && npm start",
     "postinstall": "npm run install-all && npm run build"
