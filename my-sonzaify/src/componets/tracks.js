@@ -11,9 +11,8 @@ function Tracks({ addedTracks }) {
     if (data) {
       setSearchData(data);
     }
-  }, [getJsonData()]); // This will run when getJsonData updates
+  }, [getJsonData()]); //excutes everytime user searchs this re renders
 
-  // Show nothing until search is performed
   if (!searchData || !searchData.tracks) {
     return null;
   }

@@ -18,6 +18,9 @@ had file structure problems imports were wrongended up being a typo()
 when i connect to spotfiy its flipping through all of my links old and new
 change api link response type to = code there might need to be extra code for this
 Im starting on different link than redirect link so it returns a different state paramenter
+!!!!!!!!!
+tracks wont show
+FIX: put tracks where cearch results is and fix the css and html
 
 FIX: have redirect be the current windows link not a specfic link!!!
 
