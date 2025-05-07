@@ -10,8 +10,14 @@ function Tracks({ addedTracks }) {
     const data = getJsonData();
     if (data) {
       setSearchData(data);
+      console.log("testing the tracks:", data);
     }
   }, [getJsonData()]); //excutes everytime user searchs this re renders
+
+  useEffect(() => {
+    const intervalId = setInterval(searchData, 500);
+    return () => clearInterval(intervalId);
+  }, []);
 
   // Fix: Return early if no data
   if (!searchData || !searchData.tracks) {
