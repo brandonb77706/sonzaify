@@ -5,11 +5,11 @@ import PlaylistInfo from "./componets/playlist.js";
 import SignIn from "./signin.js";
 import Tracks from "./componets/tracks.js";
 import { getUserId } from "./globalManger.js";
-const [searchResults, setSearchResults] = useState(null); // Add this state
 
 function App() {
   const [playlist, setPlaylist] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
+  const [searchResults, setSearchResults] = useState(null); // Add this state
 
   //function to add tracks
   function addedTracks(track) {
