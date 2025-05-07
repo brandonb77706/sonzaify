@@ -30,7 +30,7 @@ function SearchBar() {
       }
 
       const data = await response.json();
-      console.log("Search results are", data);
+      console.log("Search results are", data.tracks.item);
       setJsonData(data);
     } catch (error) {
       console.error("Error fetching search:", error);

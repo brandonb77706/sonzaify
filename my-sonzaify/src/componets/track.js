@@ -1,39 +1,39 @@
 import React from "react";
+import "./tracks.css";
 
-export const tracks = [
-  {
-    id: 1,
-    name: "Blinding Lights",
-    artist: "The Weeknd",
-    album: "After Hours",
-    uri: "spotify:track:1234567890",
-  },
-  {
-    id: 2,
-    name: "Levitating",
-    artist: "Dua Lipa",
-    album: "Future Nostalgia",
-    uri: "spotify:track:2345678901",
-  },
-  {
-    id: 3,
-    name: "Shape of You",
-    artist: "Ed Sheeran",
-    album: "Divide",
-    uri: "spotify:track:3456789012",
-  },
-  {
-    id: 4,
-    name: "Bad Guy",
-    artist: "Billie Eilish",
-    album: "When We All Fall Asleep, Where Do We Go?",
-    uri: "spotify:track:4567890123",
-  },
-  {
-    id: 5,
-    name: "Uptown Funk",
-    artist: "Mark Ronson ft. Bruno Mars",
-    album: "Uptown Special",
-    uri: "spotify:track:5678901234",
-  },
-];
+function Tracks({ searchResults, onSelectTrack }) {
+  if (!searchResults || searchResults.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="tracks-container">
+      {searchResults.tracks.items.map((track) => (
+        <div key={track.id} className="track-item">
+          <div className="track-content">
+            <img
+              src={track.album.images[2]?.url || "/default-album.png"}
+              alt={track.name}
+              className="track-image"
+            />
+            <div className="track-info">
+              <h3 className="track-name">{track.name}</h3>
+              <p className="track-artist">
+                {track.artists.map((artist) => artist.name).join(", ")}
+              </p>
+            </div>
+          </div>
+          <button
+            className="add-track-button"
+            onClick={() => addedTracks(track)}
+            aria-label={`Add ${track.name} to playlist`}
+          >
+            +
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default Tracks;

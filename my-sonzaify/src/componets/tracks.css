@@ -1,0 +1,41 @@
+.track-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #282828;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.track-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.add-track-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #1db954;
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 15px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.add-track-button:hover {
+  background: #1ed760;
+  transform: scale(1.1);
+}
+
+.add-track-button:active {
+  transform: scale(0.95);
+}
