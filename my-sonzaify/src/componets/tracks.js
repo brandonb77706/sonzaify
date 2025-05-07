@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./tracks.css";
-import { getJsonData, useEffect } from "../globalManger.js";
+import { getJsonData } from "../globalManger.js";
 
 function Tracks({ addedTracks }) {
   const [searchData, setSearchData] = useState(null);
