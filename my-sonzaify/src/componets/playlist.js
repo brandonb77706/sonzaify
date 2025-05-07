@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import "./playlist.css";
-import {
-  getAccessToken,
-  setAccessToken,
-  clearTracks,
-} from "../globalManger.js";
+import { getAccessToken, setAccessToken } from "../globalManger.js";
 
-function PlaylistInfo({ getUserId, playlist = [], removeTracks }) {
+function PlaylistInfo({ getUserId, playlist = [], removeTracks, clearTracks }) {
   const [playlistName, setPlaylistName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
