@@ -27,12 +27,12 @@
 
 .results-and-tracklist {
   display: flex;
-  justify-content: space-evenly;
-  gap: 30px;
+  justify-content: center;
+  gap: 40px; /* Space between components */
   padding: 20px;
-  margin: 0 30px;
-  max-width: 2200px;
-  width: auto;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .search-tracks,
@@ -41,17 +41,11 @@
   width: 100%;
   max-width: 400px;
   min-width: 300px;
-}
-/* seeing if i can have constant css in main */
-.track-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  margin-bottom: 12px;
   background-color: #ffffff1a;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  padding: 20px;
+  height: 70vh;
+  overflow-y: auto;
 }
 
 /* Animation for the gradient background */
@@ -120,27 +114,26 @@
 @media (max-width: 968px) {
   .results-and-tracklist {
     flex-direction: column;
+    align-items: center;
+    gap: 20px;
   }
 
+  .search-tracks,
   .playlist {
-    max-width: none;
-  }
-
-  .search-tracks {
-    max-height: 50vh;
+    max-width: 90%;
+    height: 50vh;
   }
 }
 
 @media (max-width: 480px) {
-  .app-main {
+  .results-and-tracklist {
     padding: 10px;
+    gap: 15px;
   }
 
-  .search-title {
-    font-size: 1.5rem;
-  }
-
-  .title {
-    font-size: 2rem;
+  .search-tracks,
+  .playlist {
+    padding: 15px;
+    height: 40vh;
   }
 }
