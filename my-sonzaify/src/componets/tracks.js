@@ -13,8 +13,9 @@ function Tracks({ addedTracks }) {
     }
   }, [getJsonData()]); //excutes everytime user searchs this re renders
 
+  // Fix: Return early if no data
   if (!searchData || !searchData.tracks) {
-    <p>test null</p>;
+    return <div className="tracks-container">Search for tracks to display</div>;
   }
 
   return (
