@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { API_URL } from "./config";
+import { API_URL } from "./config.js";
 
 function SignIn({ onConnect }) {
   const REDIRECT_URI =
