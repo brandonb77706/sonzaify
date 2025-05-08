@@ -4,9 +4,12 @@ import "./siginin.css";
 
 // Constants for Spotify API
 const SPOTIFY_CONFIG = {
-  clientId: "2c44fa46772d42b3bc909846f3e146a2",
-  clientSecret: "5033ef38d95941bf9de0a0799a0c5800",
-  redirectUri: `${window.location.origin}/callback`,
+  clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.REACT_APP_SPOTIFY_CLIENT_SECRET,
+  redirectUri:
+    process.env.NODE_ENV === "production"
+      ? "https://sonzaify.onrender.com/callback"
+      : `${window.location.origin}/callback`,
   authEndpoint: "https://accounts.spotify.com/authorize",
   tokenEndpoint: "https://accounts.spotify.com/api/token",
   apiEndpoint: "https://api.spotify.com/v1",
