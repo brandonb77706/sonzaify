@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { setAccessToken, setUserId } from "./globalManger.js";
 import "./siginin.css";
+import { API_URL } from "./config.js";
 
 const CLIENT_ID = "2c44fa46772d42b3bc909846f3e146a2";
 
@@ -69,7 +70,7 @@ function SignIn({ onConnect }) {
   }, []);
 
   const fetchAccessTokenFromBackend = async (code) => {
-    const response = await fetch("http://localhost:3001/api/spotify/token", {
+    const response = await fetch(`${API_URL}/spotify/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
