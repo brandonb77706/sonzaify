@@ -69,7 +69,7 @@ function SignIn({ onConnect }) {
   }, []);
 
   const fetchAccessTokenFromBackend = async (code) => {
-    const response = await fetch("http://localhost:3001/spotify/token", {
+    const response = await fetch("http://localhost:3001/api/spotify/token", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
