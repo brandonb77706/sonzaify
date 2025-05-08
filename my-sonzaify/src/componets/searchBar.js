@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import "./searchBar.css";
 import { getAccessToken } from "../globalManger.js";
 
-// Use environment variable or fallback for the API endpoint
-const SPOTIFY_API_URL =
-  process.env.REACT_APP_SPOTIFY_API_URL || "https://api.spotify.com/v1";
-const spotfiySearchEndpoint = `${SPOTIFY_API_URL}/search`;
+// Spotify API endpoint
+const SPOTIFY_API_URL = "https://api.spotify.com/v1";
+const spotifySearchEndpoint = `${SPOTIFY_API_URL}/search`;
 
 function SearchBar({ onSearch }) {
   const [userInput, setUserInput] = useState("");
@@ -20,10 +19,10 @@ function SearchBar({ onSearch }) {
       }
 
       setIsLoading(true);
-      setErrorMessage(""); // Clear any previous errors
+      setErrorMessage("");
 
       const response = await fetch(
-        `${spotfiySearchEndpoint}?q=${encodeURIComponent(
+        `${spotifySearchEndpoint}?q=${encodeURIComponent(
           userInput
         )}&type=track,artist&limit=15`,
         {
@@ -31,29 +30,26 @@ function SearchBar({ onSearch }) {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
-            Origin: window.location.origin, // Add origin header
           },
-          credentials: "include", // Include credentials in the request
         }
       );
 
       if (!response.ok) {
-        if (response.status === 403 || response.status === 401) {
-          // Token might be expired
+        if (response.status === 401) {
           throw new Error("Session expired. Please sign in again.");
         }
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
+        throw new Error("Failed to fetch tracks. Please try again.");
       }
 
       const data = await response.json();
-      if (!data.tracks?.items) {
-        throw new Error("No tracks found");
+      if (!data.tracks?.items?.length) {
+        throw new Error("No tracks found. Try a different search.");
       }
 
       onSearch(data);
     } catch (error) {
-      console.error("Error fetching search:", error);
-      setErrorMessage(error.message || "Failed to fetch tracks");
+      console.error("Search error:", error);
+      setErrorMessage(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -61,8 +57,8 @@ function SearchBar({ onSearch }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (userInput.trim().length === 0) {
-      setErrorMessage("Search input empty");
+    if (!userInput.trim()) {
+      setErrorMessage("Please enter a search term");
       return;
     }
     setErrorMessage("");
@@ -70,28 +66,32 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <>
+    <div className="search-container">
       <form className="search-bar" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Search for tracks..."
+          placeholder="Search for songs..."
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           className="search-input"
           disabled={isLoading}
+          aria-label="Search input"
         />
-        <div>
-          <button
-            type="submit"
-            className={`search-button ${isLoading ? "loading" : ""}`}
-            disabled={isLoading}
-          >
-            {isLoading ? "Searching..." : "Search"}
-          </button>
-        </div>
+        <button
+          type="submit"
+          className={`search-button ${isLoading ? "loading" : ""}`}
+          disabled={isLoading}
+          aria-label="Search"
+        >
+          {isLoading ? "Searching..." : "Search"}
+        </button>
       </form>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-    </>
+      {errorMessage && (
+        <p className="error-message" role="alert">
+          {errorMessage}
+        </p>
+      )}
+    </div>
   );
 }
 
