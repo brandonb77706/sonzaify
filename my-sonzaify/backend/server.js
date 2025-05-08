@@ -6,17 +6,15 @@ import fetch from "node-fetch";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// ES Module fix for __dirname
+// Configure environment and paths
+dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Load environment variables
-dotenv.config();
 
 // Initialize express
 const app = express();
 
-// Middleware
+// Middleware setup
 app.use(bodyParser.json());
 app.use(
   cors({
@@ -24,6 +22,7 @@ app.use(
       process.env.NODE_ENV === "production"
         ? process.env.FRONTEND_URL
         : "http://localhost:3000",
+    credentials: true,
   })
 );
 
@@ -32,44 +31,37 @@ const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const SPOTIFY_TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
 
-// Validation middleware
-const validateSpotifyCredentials = (req, res, next) => {
-  if (!CLIENT_ID || !CLIENT_SECRET) {
-    return res.status(500).json({
-      error: "Missing Spotify credentials",
-    });
-  }
-  next();
-};
-
-// Health check route
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "healthy" });
+// API Routes
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    status: "healthy",
+    environment: process.env.NODE_ENV,
+  });
 });
 
-// Spotify token endpoint
-app.post("/spotify/token", validateSpotifyCredentials, async (req, res) => {
-  const { code, redirectUri } = req.body;
-
-  if (!code || !redirectUri) {
-    return res.status(400).json({
-      error: "Missing required parameters",
-    });
-  }
-
-  const params = new URLSearchParams();
-  params.append("grant_type", "authorization_code");
-  params.append("code", code);
-  params.append("redirect_uri", redirectUri);
-  params.append("client_id", CLIENT_ID);
-  params.append("client_secret", CLIENT_SECRET);
-
+app.post("/api/spotify/token", async (req, res) => {
   try {
+    const { code, redirectUri } = req.body;
+
+    if (!CLIENT_ID || !CLIENT_SECRET) {
+      return res.status(500).json({ error: "Missing Spotify credentials" });
+    }
+
+    if (!code || !redirectUri) {
+      return res.status(400).json({ error: "Missing required parameters" });
+    }
+
+    const params = new URLSearchParams({
+      grant_type: "authorization_code",
+      code,
+      redirect_uri: redirectUri,
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+    });
+
     const response = await fetch(SPOTIFY_TOKEN_ENDPOINT, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: params,
     });
 
@@ -98,22 +90,30 @@ app.post("/spotify/token", validateSpotifyCredentials, async (req, res) => {
   }
 });
 
-// Serve static files in production
+// Static file serving for production
 if (process.env.NODE_ENV === "production") {
-  // Serve static files from React app
-  app.use(express.static(path.join(__dirname, "../build")));
+  const buildPath = path.join(__dirname, "..", "build");
+  app.use(express.static(buildPath));
 
-  // Handle React routing, return all requests to React app
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../build", "index.html"));
+  app.get("/*", (req, res) => {
+    res.sendFile(path.join(buildPath, "index.html"));
   });
 }
 
-// Start server
+// Server startup
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
+});
+
+// Graceful shutdown
+process.on("SIGTERM", () => {
+  console.log("SIGTERM signal received: closing HTTP server");
+  server.close(() => {
+    console.log("HTTP server closed");
+    process.exit(0);
+  });
 });
 
 // Error handling
@@ -125,3 +125,5 @@ process.on("uncaughtException", (err) => {
   console.error("Uncaught exception:", err);
   process.exit(1);
 });
+
+export default app;
