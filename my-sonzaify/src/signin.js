@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { setAccessToken, setUserId } from "./globalManger.js";
 import "./siginin.css";
 
-// Constants for Spotify API
+// Constants for Spotify API and client
 const SPOTIFY_CONFIG = {
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
   clientSecret: process.env.REACT_APP_SPOTIFY_CLIENT_SECRET,
