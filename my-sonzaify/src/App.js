@@ -9,7 +9,7 @@ import { getUserId } from "./globalManger.js";
 function App() {
   const [playlist, setPlaylist] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
-  const [searchResults, setSearchResults] = useState(null); // Add this state
+  const [searchResults, setSearchResults] = useState(null);
 
   //function to add tracks
   function addedTracks(track) {
