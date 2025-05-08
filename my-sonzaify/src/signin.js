@@ -3,65 +3,88 @@ import { setAccessToken, setUserId } from "./globalManger.js";
 import "./siginin.css";
 
 // Constants for Spotify API
-const CLIENT_ID = "2c44fa46772d42b3bc909846f3e146a2";
-const CLIENT_SECRET = "5033ef38d95941bf9de0a0799a0c5800";
-const REDIRECT_URI = `${window.location.origin}/callback`;
-const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-const SPOTIFY_TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
-const SPOTIFY_API_ENDPOINT = "https://api.spotify.com/v1";
-
-const SCOPES = [
-  "playlist-modify-public",
-  "playlist-modify-private",
-  "user-read-private",
-  "user-read-email",
-];
+const SPOTIFY_CONFIG = {
+  clientId: "2c44fa46772d42b3bc909846f3e146a2",
+  clientSecret: "5033ef38d95941bf9de0a0799a0c5800",
+  redirectUri: `${window.location.origin}/callback`,
+  authEndpoint: "https://accounts.spotify.com/authorize",
+  tokenEndpoint: "https://accounts.spotify.com/api/token",
+  apiEndpoint: "https://api.spotify.com/v1",
+  scopes: [
+    "playlist-modify-public",
+    "playlist-modify-private",
+    "user-read-private",
+    "user-read-email",
+  ],
+};
 
 function SignIn({ onConnect }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const exchangeCodeForToken = async (code) => {
-    const tokenResponse = await fetch(SPOTIFY_TOKEN_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        grant_type: "authorization_code",
-        code,
-        redirect_uri: REDIRECT_URI,
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-      }),
-    });
+    try {
+      const tokenResponse = await fetch(SPOTIFY_CONFIG.tokenEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          grant_type: "authorization_code",
+          code,
+          redirect_uri: SPOTIFY_CONFIG.redirectUri,
+          client_id: SPOTIFY_CONFIG.clientId,
+          client_secret: SPOTIFY_CONFIG.clientSecret,
+        }),
+      });
 
-    if (!tokenResponse.ok) {
-      const errorData = await tokenResponse.json();
-      throw new Error(errorData.error_description || "Failed to exchange code");
+      if (!tokenResponse.ok) {
+        const errorData = await tokenResponse.json();
+        console.error("Token exchange failed:", errorData);
+        throw new Error(
+          errorData.error_description || "Failed to connect to Spotify"
+        );
+      }
+
+      return tokenResponse.json();
+    } catch (error) {
+      console.error("Token exchange error:", error);
+      throw new Error("Connection failed. Please try again.");
     }
-
-    return tokenResponse.json();
   };
 
   const fetchUserProfile = async (accessToken) => {
-    const profileResponse = await fetch(`${SPOTIFY_API_ENDPOINT}/me`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    try {
+      const profileResponse = await fetch(`${SPOTIFY_CONFIG.apiEndpoint}/me`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (!profileResponse.ok) {
-      throw new Error("Failed to fetch user profile");
+      if (!profileResponse.ok) {
+        const errorData = await profileResponse.json();
+        console.error("Profile fetch failed:", errorData);
+        throw new Error("Failed to fetch user profile");
+      }
+
+      return profileResponse.json();
+    } catch (error) {
+      console.error("Profile fetch error:", error);
+      throw new Error("Failed to get user information");
     }
-
-    return profileResponse.json();
   };
 
   useEffect(() => {
     const handleAuthCallback = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get("code");
+      const authError = urlParams.get("error");
+
+      if (authError) {
+        setError("Authorization was denied");
+        return;
+      }
 
       if (!code) return;
 
@@ -69,11 +92,9 @@ function SignIn({ onConnect }) {
         setIsLoading(true);
         setError(null);
 
-        // Exchange code for token
         const tokenData = await exchangeCodeForToken(code);
         setAccessToken(tokenData.access_token);
 
-        // Fetch user profile
         const profileData = await fetchUserProfile(tokenData.access_token);
         setUserId(profileData.id);
 
@@ -91,14 +112,14 @@ function SignIn({ onConnect }) {
 
   const authorizeWithSpotify = () => {
     const params = new URLSearchParams({
-      client_id: CLIENT_ID,
+      client_id: SPOTIFY_CONFIG.clientId,
       response_type: "code",
-      redirect_uri: REDIRECT_URI,
-      scope: SCOPES.join(" "),
+      redirect_uri: SPOTIFY_CONFIG.redirectUri,
+      scope: SPOTIFY_CONFIG.scopes.join(" "),
       show_dialog: true,
     });
 
-    window.location.href = `${SPOTIFY_AUTH_ENDPOINT}?${params.toString()}`;
+    window.location.href = `${SPOTIFY_CONFIG.authEndpoint}?${params}`;
   };
 
   return (
