@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { setAccessToken, setUserId } from "./globalManger.js";
 import "./siginin.css";
 
-//client id from frontend .env
+//client id from rooot
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const REDIRECT_URI = `${window.location.origin}/callback`;
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
