@@ -4,6 +4,8 @@ import "./siginin.css";
 
 //client id from top of src
 const CLIENT_ID = "2c44fa46772d42b3bc909846f3e146a2";
+const CLIENT_SECRET = "5033ef38d95941bf9de0a0799a0c5800"; // Add client secret
+
 const REDIRECT_URI = `${window.location.origin}/callback`;
 const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const SPOTIFY_API_ENDPOINT = "https://api.spotify.com/v1";
