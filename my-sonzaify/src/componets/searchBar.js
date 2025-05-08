@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import "./searchBar.css";
 import { getAccessToken } from "../globalManger.js";
 
-const spotfiySearchEndpoint = "https://api.spotify.com/v1/search";
+// Use environment variable or fallback for the API endpoint
+const SPOTIFY_API_URL =
+  process.env.REACT_APP_SPOTIFY_API_URL || "https://api.spotify.com/v1";
+const spotfiySearchEndpoint = `${SPOTIFY_API_URL}/search`;
 
 function SearchBar({ onSearch }) {
   const [userInput, setUserInput] = useState("");
@@ -11,7 +14,14 @@ function SearchBar({ onSearch }) {
 
   async function getTracks() {
     try {
+      const accessToken = getAccessToken();
+      if (!accessToken) {
+        throw new Error("Please sign in to search");
+      }
+
       setIsLoading(true);
+      setErrorMessage(""); // Clear any previous errors
+
       const response = await fetch(
         `${spotfiySearchEndpoint}?q=${encodeURIComponent(
           userInput
@@ -19,21 +29,31 @@ function SearchBar({ onSearch }) {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+            Origin: window.location.origin, // Add origin header
           },
+          credentials: "include", // Include credentials in the request
         }
       );
 
       if (!response.ok) {
+        if (response.status === 403 || response.status === 401) {
+          // Token might be expired
+          throw new Error("Session expired. Please sign in again.");
+        }
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log("Search results:", data.tracks.items);
-      onSearch(data); // Pass data up to parent instead of using global state
+      if (!data.tracks?.items) {
+        throw new Error("No tracks found");
+      }
+
+      onSearch(data);
     } catch (error) {
       console.error("Error fetching search:", error);
-      setErrorMessage("Failed to fetch tracks");
+      setErrorMessage(error.message || "Failed to fetch tracks");
     } finally {
       setIsLoading(false);
     }
