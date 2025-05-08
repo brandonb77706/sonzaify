@@ -4,8 +4,8 @@ import "./siginin.css";
 
 // Constants for Spotify API
 const SPOTIFY_CONFIG = {
-  clientId: process.env.SPOTIFY_CLIENT_ID,
-  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.REACT_APP_SPOTIFY_CLIENT_SECRET,
   redirectUri:
     process.env.NODE_ENV === "production"
       ? "https://sonzaify.onrender.com/callback"
@@ -20,6 +20,11 @@ const SPOTIFY_CONFIG = {
     "user-read-email",
   ],
 };
+
+// Add validation
+if (!SPOTIFY_CONFIG.clientId) {
+  console.error("Missing REACT_APP_SPOTIFY_CLIENT_ID environment variable");
+}
 
 function SignIn({ onConnect }) {
   const [isLoading, setIsLoading] = useState(false);
