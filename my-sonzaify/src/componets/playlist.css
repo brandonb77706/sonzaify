@@ -38,32 +38,49 @@
   border-bottom: 2px solid #38bdf8;
 }
 
-.playlist-results {
+.track-item {
   display: flex;
-  flex-direction: column; /* Stack playlist items vertically */
-  gap: 20px; /* Add spacing between items */
-  width: 100%;
-  align-items: center; /* Center items horizontally */
-}
-
-.playlist-result-item {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  margin-bottom: 12px;
+  background-color: #ffffff1a;
   border-radius: 8px;
-  padding: 15px;
-  width: 100%;
-  max-width: 300px; /* Ensure consistent size */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.3s ease;
 }
 
-.playlist-result-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+.track-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
 }
 
-.playlist-result-item button {
+.track-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.track-info {
+  flex: 1;
+}
+
+.track-name {
+  margin: 0;
+  font-size: 16px;
+  color: white;
+  font-weight: 500;
+}
+
+.track-artist {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.track-item button {
   background-color: #ff4d4d;
   color: white;
   border: none;
@@ -77,7 +94,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.playlist-result-item button:hover {
+.track-item button:hover {
   background-color: #e60000;
   transform: scale(1.1);
 }
@@ -160,8 +177,6 @@
 .remove-track-button:active {
   transform: scale(0.95);
 }
-
-/* ...existing styles... */
 
 /* Responsive Styles */
 @media screen and (max-width: 768px) {

@@ -5,7 +5,7 @@ import check from "../images/check.png";
 function Tracks({ addedTracks, searchResults }) {
   const [isAdded, setIsAdded] = useState(false);
   function checkMark(track) {
-    searchResults.tracks.items.map((t) => {
+    track.map((t) => {
       if (track.id === t.id) {
         setIsAdded(true);
       }
