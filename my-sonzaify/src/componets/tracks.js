@@ -1,7 +1,8 @@
 import React from "react";
 import "./tracks.css";
+import check from "../images/check.png";
 
-function Tracks({ addedTracks, searchResults }) {
+function Tracks({ addedTracks, searchResults, isAdded }) {
   return (
     <div className="tracks-container">
       {!searchResults && <div>Search for tracks to display</div>}
@@ -26,7 +27,7 @@ function Tracks({ addedTracks, searchResults }) {
             onClick={() => addedTracks(track)}
             aria-label={`Add ${track.name} to playlist`}
           >
-            +
+            {isAdded ? <img src={check} alt="check" /> : "+"}
           </button>
         </div>
       ))}

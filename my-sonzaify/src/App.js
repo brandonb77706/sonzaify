@@ -10,9 +10,12 @@ function App() {
   const [playlist, setPlaylist] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [searchResults, setSearchResults] = useState(null);
+  const [isAdded, setIsAdded] = useState(false);
 
   //function to add tracks
   function addedTracks(track) {
+    //making check is clicked plus if not
+    setIsAdded(true);
     // the info we want to add to the track
     const trackInfo = {
       id: track.id,
@@ -30,6 +33,7 @@ function App() {
   //function to remove tracks
   function removeTracks(track) {
     setPlaylist(playlist.filter((t) => track.id !== t.id));
+    setIsAdded(false);
   }
 
   function clearTracks() {
@@ -68,7 +72,11 @@ function App() {
         <SearchBar onSearch={handleSearch} />
         <div className="results-and-tracklist">
           <div className="search-tracks">
-            <Tracks addedTracks={addedTracks} searchResults={searchResults} />
+            <Tracks
+              addedTracks={addedTracks}
+              isAdded={isAdded}
+              searchResults={searchResults}
+            />
           </div>
           <div className="playlist">
             <PlaylistInfo
