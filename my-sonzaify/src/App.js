@@ -13,8 +13,6 @@ function App() {
 
   //function to add tracks
   function addedTracks(track) {
-    //making check is clicked plus if not
-    setIsAdded(true);
     // the info we want to add to the track
     const trackInfo = {
       id: track.id,
