@@ -4,6 +4,13 @@ import check from "../images/check.png";
 
 function Tracks({ addedTracks, searchResults }) {
   const [isAdded, setIsAdded] = useState(false);
+  function checkMark(track) {
+    searchResults.tracks.items.map((t) => {
+      if (track.id === t.id) {
+        setIsAdded(true);
+      }
+    });
+  }
   return (
     <div className="tracks-container">
       {!searchResults && <div>Search for tracks to display</div>}
@@ -27,7 +34,7 @@ function Tracks({ addedTracks, searchResults }) {
             className="add-track-button"
             onClick={() => {
               addedTracks(track);
-              setIsAdded(true);
+              checkMark(track);
             }}
             aria-label={`Add ${track.name} to playlist`}
           >
