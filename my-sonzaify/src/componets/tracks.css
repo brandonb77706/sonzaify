@@ -17,6 +17,7 @@
   margin-bottom: 12px;
   background-color: #ffffff1a;
   border-radius: 8px;
+  width: 333px;
   transition: all 0.3s ease;
 }
 
@@ -51,7 +52,7 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-.add-track-button {
+.add-track-button button {
   background-color: #38bdf8;
   color: white;
   border: none;
@@ -65,12 +66,12 @@
   transition: all 0.3s ease;
 }
 
-.add-track-button:hover {
+.add-track-button button:hover {
   background-color: #0ea5e9;
   transform: scale(1.1);
 }
 
-.add-track-button:active {
+.add-track-butto button:active {
   transform: scale(0.95);
 }
 

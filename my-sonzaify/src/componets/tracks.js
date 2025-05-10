@@ -3,14 +3,24 @@ import "./tracks.css";
 import check from "../images/check.png";
 
 function Tracks({ addedTracks, searchResults }) {
-  const [isAdded, setIsAdded] = useState(false);
-  function checkMark(track) {
-    track.map((t) => {
-      if (track.id === t.id) {
-        setIsAdded(true);
+  const [addedTrackIds, setAddedTrackIds] = useState(new Set());
+
+  const handleAddTrack = (track) => {
+    setAddedTrackIds((prev) => {
+      const newIds = new Set(prev);
+      if (newIds.has(track.id)) {
+        newIds.delete(track.id);
+      } else {
+        newIds.add(track.id);
       }
+      return newIds;
     });
-  }
+    addedTracks(track);
+  };
+  const isTrackAdded = (trackId) => {
+    return addedTrackIds.has(trackId);
+  };
+
   return (
     <div className="tracks-container">
       {!searchResults && <div>Search for tracks to display</div>}
@@ -32,13 +42,10 @@ function Tracks({ addedTracks, searchResults }) {
           </div>
           <button
             className="add-track-button"
-            onClick={() => {
-              addedTracks(track);
-              checkMark(track);
-            }}
+            onClick={() => handleAddTrack(track)}
             aria-label={`Add ${track.name} to playlist`}
           >
-            {isAdded ? <img src={check} alt="check" /> : "+"}
+            {isTrackAdded(track.id) ? <img src={check} alt="check" /> : "+"}
           </button>
         </div>
       ))}
