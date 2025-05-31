@@ -1,0 +1,87 @@
+import React, { useState } from "react";
+import SearchBar from "./componets/searchBar.jsx";
+import "./App.css";
+import PlaylistInfo from "./componets/playlist.jsx";
+import SignIn from "./signin.jsx";
+import Tracks from "./componets/tracks.jsx";
+import { getUserId } from "./globalManger.js";
+
+function App() {
+  const [playlist, setPlaylist] = useState([]);
+  const [isConnected, setIsConnected] = useState(false);
+  const [searchResults, setSearchResults] = useState(null);
+
+  //function to add tracks
+  function addedTracks(track) {
+    // the info we want to add to the track
+    const trackInfo = {
+      id: track.id,
+      name: track.name,
+      artists: track.artists,
+      album: {
+        images: track.album.images,
+      },
+      uri: track.uri,
+    };
+    if (!playlist.some((t) => track.id === t.id)) {
+      setPlaylist((prevTrack) => [trackInfo, ...prevTrack]);
+    }
+  }
+  //function to remove tracks
+  function removeTracks(track) {
+    setPlaylist(playlist.filter((t) => track.id !== t.id));
+  }
+
+  function clearTracks() {
+    setPlaylist([]);
+    setSearchResults(null);
+  }
+
+  // Add this function to handle search results
+  const handleSearch = (results) => {
+    setSearchResults(results);
+  };
+
+  //handles connections to spotfiy
+  const handleConnectToSpotify = () => {
+    setIsConnected(true);
+  };
+
+  //consdition if not connected
+  if (!isConnected) {
+    return (
+      <div className="app-container">
+        <main className="app-main">
+          <h1 className="title">Sonzaify </h1>
+          <SignIn onConnect={handleConnectToSpotify} />
+        </main>
+      </div>
+    );
+  }
+
+  return (
+    <div className="app-container">
+      <header className="app-header">
+        <h1 className="search-title">Sonzaify</h1>
+      </header>
+      <main className="app-main">
+        <SearchBar onSearch={handleSearch} />
+        <div className="results-and-tracklist">
+          <div className="search-tracks">
+            <Tracks addedTracks={addedTracks} searchResults={searchResults} />
+          </div>
+          <div className="playlist">
+            <PlaylistInfo
+              getUserId={getUserId}
+              playlist={playlist}
+              removeTracks={removeTracks}
+              clearTracks={clearTracks}
+            />
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+export default App;

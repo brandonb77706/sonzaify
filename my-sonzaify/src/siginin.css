@@ -1,0 +1,101 @@
+/* Center the container vertically and horizontally */
+.signin-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Adjust the prompt section to move it higher */
+.prompt {
+  margin-top: -100px;
+  margin-bottom: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+/* Style the h2 element */
+.prompt h2 {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Style the button */
+.prompt-button {
+  background-color: #1db954;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.prompt-button:hover {
+  background-color: #1ed760;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(29, 185, 84, 0.4);
+}
+
+.prompt-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(29, 185, 84, 0.4);
+}
+
+.error-message {
+  color: #ff5252;
+  margin: 15px 0;
+  padding: 12px;
+  background-color: rgba(255, 82, 82, 0.15);
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.prompt-button.loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: #18a349;
+}
+
+@media (max-width: 768px) {
+  .prompt {
+    padding: 25px;
+    max-width: 90%;
+  }
+
+  .prompt h2 {
+    font-size: 1.5rem;
+  }
+
+  .prompt-button {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .prompt {
+    padding: 20px;
+  }
+
+  .prompt h2 {
+    font-size: 1.3rem;
+  }
+}

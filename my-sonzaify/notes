@@ -5,12 +5,27 @@ challenges
 
 \*trouble authorizing user account and connecting them to spotify
 
-- had problems with organization/ file srtucture
+- trouble with the redirect links
+  -manifest.json problems my redirect is returning 401
+  when i push to git my signin.js isn't changing the redirect uri
+  COMMONE REDIRECT PROBLEM: files used in vercel arent updated with the right redirect file
+
+* had problems with organization/ file srtucture
   trouble with props concept
+
+had file structure problems imports were wrongended up being a typo()
+
+when i connect to spotfiy its flipping through all of my links old and new
+change api link response type to = code there might need to be extra code for this
+Im starting on different link than redirect link so it returns a different state paramenter
+!!!!!!!!!
+tracks wont show
+FIX: put tracks where cearch results is and fix the css and html
+
+FIX: have redirect be the current windows link not a specfic link!!!
 
 had css bugs with unadded classnames in different files
 
 NOTES
-once we connect to spotify the redirect link does old code
-we need to change branch on vercel to the test and also add what we have to git
 fix error in search bar
+look at dev tools to Debugging

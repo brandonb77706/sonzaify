@@ -1,0 +1,21 @@
+{
+  "name": "sonzaify",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install-client": "cd my-sonzaify && npm ci --omit=dev",
+    "install-server": "cd my-sonzaify/backend && npm ci --omit=dev",
+    "install-all": "npm run install-server && npm run install-client",
+    "build": "cd my-sonzaify && npm run build",
+    "start": "cd my-sonzaify/backend && node server.js",
+    "postinstall": "npm run install-all && npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
