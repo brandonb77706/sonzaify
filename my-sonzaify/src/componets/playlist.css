@@ -1,19 +1,19 @@
 .playlist-container {
   display: flex;
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Center items horizontally */
-  justify-content: flex-start; /* Align items to the top */
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   width: 100%;
-  max-width: 800px; /* Optional: Limit the width of the playlist */
-  margin: auto; /* Center the container horizontally */
+  max-width: 800px;
+  margin: auto;
   padding: 20px;
-  box-sizing: border-box; /* Include padding in width/height calculations */
+  box-sizing: border-box;
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; /* Add scrolling if content overflows */
-  max-height: 80vh; /* Limit height to 80% of the viewport */
+  overflow-y: auto;
+  max-height: 80vh;
 }
 
 .playlist-input-wrapper {
@@ -81,47 +81,28 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-.track-item button {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px; /* Add spacing between text and button */
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.track-item button:hover {
-  background-color: #e60000;
-  transform: scale(1.1);
-}
-
 .save-to-spotify-button {
-  background-color: #1db954; /* Spotify green */
+  background-color: #1db954;
   color: white;
   border: none;
-  border-radius: 50px; /* Rounded button */
-  padding: 10px 20px; /* Add padding for a larger button */
+  border-radius: 50px;
+  padding: 10px 20px;
   margin-top: 20px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .save-to-spotify-button:hover {
-  background-color: #1ed760; /* Lighter Spotify green on hover */
-  transform: scale(1.05); /* Slightly enlarge the button on hover */
+  background-color: #1ed760;
+  transform: scale(1.05);
 }
 
 .save-to-spotify-button:active {
-  background-color: #1aa34a; /* Darker green when clicked */
-  transform: scale(0.95); /* Slightly shrink the button when clicked */
+  background-color: #1aa34a;
+  transform: scale(0.95);
 }
 
 .playlist-actions {

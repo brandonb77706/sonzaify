@@ -71,7 +71,7 @@
   transform: scale(1.1);
 }
 
-.add-track-butto button:active {
+.add-track-button button:active {
   transform: scale(0.95);
 }
 
