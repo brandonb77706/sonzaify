@@ -22,7 +22,7 @@ Sonzaify is a modern web application that simplifies the process of creating and
 
 ## Technical Stack
 
-- **Frontend**: React.js
+- **Frontend**: JavaScript React.js
 - **Styling**: Custom CSS with flexbox layouts
 - **Authentication**: Spotify OAuth 2.0
 - **API**: Spotify Web API
